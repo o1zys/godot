@@ -54,9 +54,9 @@ public:
 		friend class List<T, A>;
 
 		T value;
-		Element *next_ptr;
-		Element *prev_ptr;
-		_Data *data;
+		Element *next_ptr = nullptr;
+		Element *prev_ptr = nullptr;
+		_Data *data = nullptr;
 
 	public:
 		/**
@@ -139,11 +139,7 @@ public:
 			data->erase(this);
 		}
 
-		_FORCE_INLINE_ Element() {
-			next_ptr = 0;
-			prev_ptr = 0;
-			data = nullptr;
-		};
+		_FORCE_INLINE_ Element() {}
 	};
 
 private:
@@ -178,7 +174,7 @@ private:
 		}
 	};
 
-	_Data *_data;
+	_Data *_data = nullptr;
 
 public:
 	/**
@@ -186,14 +182,14 @@ public:
 	*/
 	_FORCE_INLINE_ const Element *front() const {
 
-		return _data ? _data->first : 0;
+		return _data ? _data->first : nullptr;
 	};
 
 	/**
 	* return an iterator to the beginning of the list.
 	*/
 	_FORCE_INLINE_ Element *front() {
-		return _data ? _data->first : 0;
+		return _data ? _data->first : nullptr;
 	};
 
 	/**
@@ -201,7 +197,7 @@ public:
 	*/
 	_FORCE_INLINE_ const Element *back() const {
 
-		return _data ? _data->last : 0;
+		return _data ? _data->last : nullptr;
 	};
 
 	/**
@@ -209,7 +205,7 @@ public:
 	*/
 	_FORCE_INLINE_ Element *back() {
 
-		return _data ? _data->last : 0;
+		return _data ? _data->last : nullptr;
 	};
 
 	/**
@@ -229,7 +225,7 @@ public:
 		n->value = (T &)value;
 
 		n->prev_ptr = _data->last;
-		n->next_ptr = 0;
+		n->next_ptr = nullptr;
 		n->data = _data;
 
 		if (_data->last) {
@@ -268,7 +264,7 @@ public:
 
 		Element *n = memnew_allocator(Element, A);
 		n->value = (T &)value;
-		n->prev_ptr = 0;
+		n->prev_ptr = nullptr;
 		n->next_ptr = _data->first;
 		n->data = _data;
 
@@ -353,7 +349,8 @@ public:
 
 		Element *it = front();
 		while (it) {
-			if (it->value == p_val) return it;
+			if (it->value == p_val)
+				return it;
 			it = it->next();
 		};
 
@@ -686,7 +683,6 @@ public:
 	 */
 	List(const List &p_list) {
 
-		_data = nullptr;
 		const Element *it = p_list.front();
 		while (it) {
 
@@ -695,9 +691,8 @@ public:
 		}
 	}
 
-	List() {
-		_data = nullptr;
-	};
+	List() {}
+
 	~List() {
 		clear();
 		if (_data) {

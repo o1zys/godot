@@ -74,7 +74,8 @@ void ScriptEditorDebugger::_put_msg(String p_message, Array p_data) {
 
 void ScriptEditorDebugger::debug_copy() {
 	String msg = reason->get_text();
-	if (msg == "") return;
+	if (msg == "")
+		return;
 	DisplayServer::get_singleton()->clipboard_set(msg);
 }
 
@@ -130,10 +131,12 @@ void ScriptEditorDebugger::update_tabs() {
 		tabs->set_tab_icon(errors_tab->get_index(), Ref<Texture2D>());
 	} else {
 		errors_tab->set_name(TTR("Errors") + " (" + itos(error_count + warning_count) + ")");
-		if (error_count == 0) {
-			tabs->set_tab_icon(errors_tab->get_index(), get_theme_icon("Warning", "EditorIcons"));
-		} else {
+		if (error_count >= 1 && warning_count >= 1) {
+			tabs->set_tab_icon(errors_tab->get_index(), get_theme_icon("ErrorWarning", "EditorIcons"));
+		} else if (error_count >= 1) {
 			tabs->set_tab_icon(errors_tab->get_index(), get_theme_icon("Error", "EditorIcons"));
+		} else {
+			tabs->set_tab_icon(errors_tab->get_index(), get_theme_icon("Warning", "EditorIcons"));
 		}
 	}
 }
@@ -842,6 +845,8 @@ void ScriptEditorDebugger::_notification(int p_what) {
 		case NOTIFICATION_PROCESS: {
 
 			if (is_session_active()) {
+
+				peer->poll();
 
 				if (camera_override == CameraOverride::OVERRIDE_2D) {
 					CanvasItemEditor *editor = CanvasItemEditor::get_singleton();

@@ -337,10 +337,14 @@ Error ResourceLoaderBinary::parse_variant(Variant &r_v) {
 				} break;
 				case OBJECT_INTERNAL_RESOURCE: {
 					uint32_t index = f->get_32();
+					String path = res_path + "::" + itos(index);
+
 					if (use_nocache) {
-						r_v = internal_resources[index].cache;
+						if (!internal_index_cache.has(path)) {
+							WARN_PRINT(String("Couldn't load resource (no cache): " + path).utf8().get_data());
+						}
+						r_v = internal_index_cache[path];
 					} else {
-						String path = res_path + "::" + itos(index);
 						RES res = ResourceLoader::load(path);
 						if (res.is_null()) {
 							WARN_PRINT(String("Couldn't load resource: " + path).utf8().get_data());
@@ -720,13 +724,15 @@ Error ResourceLoaderBinary::load() {
 
 		if (!main) {
 
+			path = internal_resources[i].path;
+
+			if (path.begins_with("local://")) {
+				path = path.replace_first("local://", "");
+				subindex = path.to_int();
+				path = res_path + "::" + path;
+			}
+
 			if (!use_nocache) {
-				path = internal_resources[i].path;
-				if (path.begins_with("local://")) {
-					path = path.replace_first("local://", "");
-					subindex = path.to_int();
-					path = res_path + "::" + path;
-				}
 
 				if (ResourceCache::has(path)) {
 					//already loaded, don't do anything
@@ -769,7 +775,7 @@ Error ResourceLoaderBinary::load() {
 		r->set_subindex(subindex);
 
 		if (!main) {
-			internal_resources.write[i].cache = res;
+			internal_index_cache[path] = res;
 		}
 
 		int pc = f->get_32();
@@ -1016,18 +1022,6 @@ String ResourceLoaderBinary::recognize(FileAccess *p_f) {
 	String type = get_unicode_string();
 
 	return type;
-}
-
-ResourceLoaderBinary::ResourceLoaderBinary() :
-		translation_remapped(false),
-		ver_format(0),
-		f(nullptr),
-		importmd_ofs(0),
-		error(OK) {
-
-	use_nocache = false;
-	progress = nullptr;
-	use_sub_threads = false;
 }
 
 ResourceLoaderBinary::~ResourceLoaderBinary() {
@@ -2112,6 +2106,5 @@ void ResourceFormatSaverBinary::get_recognized_extensions(const RES &p_resource,
 ResourceFormatSaverBinary *ResourceFormatSaverBinary::singleton = nullptr;
 
 ResourceFormatSaverBinary::ResourceFormatSaverBinary() {
-
 	singleton = this;
 }

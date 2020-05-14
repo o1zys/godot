@@ -49,11 +49,21 @@ void Logger::log_error(const char *p_function, const char *p_file, int p_line, c
 
 	const char *err_type = "ERROR";
 	switch (p_type) {
-		case ERR_ERROR: err_type = "ERROR"; break;
-		case ERR_WARNING: err_type = "WARNING"; break;
-		case ERR_SCRIPT: err_type = "SCRIPT ERROR"; break;
-		case ERR_SHADER: err_type = "SHADER ERROR"; break;
-		default: ERR_PRINT("Unknown error type"); break;
+		case ERR_ERROR:
+			err_type = "ERROR";
+			break;
+		case ERR_WARNING:
+			err_type = "WARNING";
+			break;
+		case ERR_SCRIPT:
+			err_type = "SCRIPT ERROR";
+			break;
+		case ERR_SHADER:
+			err_type = "SHADER ERROR";
+			break;
+		default:
+			ERR_PRINT("Unknown error type");
+			break;
 	}
 
 	const char *err_details;
@@ -91,8 +101,6 @@ void Logger::logf_error(const char *p_format, ...) {
 
 	va_end(argp);
 }
-
-Logger::~Logger() {}
 
 void RotatedFileLogger::close_file() {
 	if (file) {
@@ -170,8 +178,7 @@ void RotatedFileLogger::rotate_file() {
 
 RotatedFileLogger::RotatedFileLogger(const String &p_base_path, int p_max_files) :
 		base_path(p_base_path.simplify_path()),
-		max_files(p_max_files > 0 ? p_max_files : 1),
-		file(nullptr) {
+		max_files(p_max_files > 0 ? p_max_files : 1) {
 	rotate_file();
 }
 
@@ -225,8 +232,6 @@ void StdLogger::logv(const char *p_format, va_list p_list, bool p_err) {
 #endif
 	}
 }
-
-StdLogger::~StdLogger() {}
 
 CompositeLogger::CompositeLogger(Vector<Logger *> p_loggers) :
 		loggers(p_loggers) {

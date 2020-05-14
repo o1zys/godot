@@ -492,31 +492,24 @@ String GDScriptLanguage::make_function(const String &p_class, const String &p_na
 
 struct GDScriptCompletionContext {
 
-	const GDScriptParser::ClassNode *_class;
-	const GDScriptParser::FunctionNode *function;
-	const GDScriptParser::BlockNode *block;
-	Object *base;
+	const GDScriptParser::ClassNode *_class = nullptr;
+	const GDScriptParser::FunctionNode *function = nullptr;
+	const GDScriptParser::BlockNode *block = nullptr;
+	Object *base = nullptr;
 	String base_path;
-	int line;
-	uint32_t depth;
+	int line = 0;
+	uint32_t depth = 0;
 
-	GDScriptCompletionContext() :
-			_class(nullptr),
-			function(nullptr),
-			block(nullptr),
-			base(nullptr),
-			line(0),
-			depth(0) {}
+	GDScriptCompletionContext() {}
 };
 
 struct GDScriptCompletionIdentifier {
 	GDScriptParser::DataType type;
 	String enumeration;
 	Variant value;
-	const GDScriptParser::Node *assigned_expression;
+	const GDScriptParser::Node *assigned_expression = nullptr;
 
-	GDScriptCompletionIdentifier() :
-			assigned_expression(nullptr) {}
+	GDScriptCompletionIdentifier() {}
 };
 
 static void _get_directory_contents(EditorFileSystemDirectory *p_dir, Map<String, ScriptCodeCompletionOption> &r_list) {
@@ -1082,16 +1075,36 @@ static bool _guess_expression_type(GDScriptCompletionContext &p_context, const G
 
 					Variant::Operator vop = Variant::OP_MAX;
 					switch (op->op) {
-						case GDScriptParser::OperatorNode::OP_ADD: vop = Variant::OP_ADD; break;
-						case GDScriptParser::OperatorNode::OP_SUB: vop = Variant::OP_SUBTRACT; break;
-						case GDScriptParser::OperatorNode::OP_MUL: vop = Variant::OP_MULTIPLY; break;
-						case GDScriptParser::OperatorNode::OP_DIV: vop = Variant::OP_DIVIDE; break;
-						case GDScriptParser::OperatorNode::OP_MOD: vop = Variant::OP_MODULE; break;
-						case GDScriptParser::OperatorNode::OP_SHIFT_LEFT: vop = Variant::OP_SHIFT_LEFT; break;
-						case GDScriptParser::OperatorNode::OP_SHIFT_RIGHT: vop = Variant::OP_SHIFT_RIGHT; break;
-						case GDScriptParser::OperatorNode::OP_BIT_AND: vop = Variant::OP_BIT_AND; break;
-						case GDScriptParser::OperatorNode::OP_BIT_OR: vop = Variant::OP_BIT_OR; break;
-						case GDScriptParser::OperatorNode::OP_BIT_XOR: vop = Variant::OP_BIT_XOR; break;
+						case GDScriptParser::OperatorNode::OP_ADD:
+							vop = Variant::OP_ADD;
+							break;
+						case GDScriptParser::OperatorNode::OP_SUB:
+							vop = Variant::OP_SUBTRACT;
+							break;
+						case GDScriptParser::OperatorNode::OP_MUL:
+							vop = Variant::OP_MULTIPLY;
+							break;
+						case GDScriptParser::OperatorNode::OP_DIV:
+							vop = Variant::OP_DIVIDE;
+							break;
+						case GDScriptParser::OperatorNode::OP_MOD:
+							vop = Variant::OP_MODULE;
+							break;
+						case GDScriptParser::OperatorNode::OP_SHIFT_LEFT:
+							vop = Variant::OP_SHIFT_LEFT;
+							break;
+						case GDScriptParser::OperatorNode::OP_SHIFT_RIGHT:
+							vop = Variant::OP_SHIFT_RIGHT;
+							break;
+						case GDScriptParser::OperatorNode::OP_BIT_AND:
+							vop = Variant::OP_BIT_AND;
+							break;
+						case GDScriptParser::OperatorNode::OP_BIT_OR:
+							vop = Variant::OP_BIT_OR;
+							break;
+						case GDScriptParser::OperatorNode::OP_BIT_XOR:
+							vop = Variant::OP_BIT_XOR;
+							break;
 						default: {
 						}
 					}

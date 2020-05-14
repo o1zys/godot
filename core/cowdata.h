@@ -54,7 +54,7 @@ class CowData {
 	friend class VMap;
 
 private:
-	mutable T *_ptr;
+	mutable T *_ptr = nullptr;
 
 	// internal helpers
 
@@ -132,7 +132,7 @@ public:
 	}
 
 	_FORCE_INLINE_ void clear() { resize(0); }
-	_FORCE_INLINE_ bool empty() const { return _ptr == 0; }
+	_FORCE_INLINE_ bool empty() const { return _ptr == nullptr; }
 
 	_FORCE_INLINE_ void set(int p_index, const T &p_elem) {
 
@@ -183,7 +183,7 @@ public:
 
 	int find(const T &p_val, int p_from = 0) const;
 
-	_FORCE_INLINE_ CowData();
+	_FORCE_INLINE_ CowData() {}
 	_FORCE_INLINE_ ~CowData();
 	_FORCE_INLINE_ CowData(CowData<T> &p_from) { _ref(p_from); };
 };
@@ -364,12 +364,6 @@ void CowData<T>::_ref(const CowData &p_from) {
 	if (atomic_conditional_increment(p_from._get_refcount()) > 0) { // could reference
 		_ptr = p_from._ptr;
 	}
-}
-
-template <class T>
-CowData<T>::CowData() {
-
-	_ptr = nullptr;
 }
 
 template <class T>

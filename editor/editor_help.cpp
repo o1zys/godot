@@ -526,7 +526,7 @@ void EditorHelp::_update_doc() {
 		class_desc->push_font(doc_code_font);
 		class_desc->push_indent(1);
 		class_desc->push_table(2);
-		class_desc->set_table_column_expand(1, 1);
+		class_desc->set_table_column_expand(1, true);
 
 		for (int i = 0; i < cd.properties.size(); i++) {
 			property_line[cd.properties[i].name] = class_desc->get_line_count() - 2; //gets overridden if description
@@ -629,7 +629,7 @@ void EditorHelp::_update_doc() {
 		class_desc->push_font(doc_code_font);
 		class_desc->push_indent(1);
 		class_desc->push_table(2);
-		class_desc->set_table_column_expand(1, 1);
+		class_desc->set_table_column_expand(1, true);
 
 		bool any_previous = false;
 		for (int pass = 0; pass < 2; pass++) {
@@ -698,7 +698,7 @@ void EditorHelp::_update_doc() {
 
 		class_desc->push_indent(1);
 		class_desc->push_table(2);
-		class_desc->set_table_column_expand(1, 1);
+		class_desc->set_table_column_expand(1, true);
 
 		for (int i = 0; i < cd.theme_properties.size(); i++) {
 
@@ -1005,7 +1005,7 @@ void EditorHelp::_update_doc() {
 			property_line[cd.properties[i].name] = class_desc->get_line_count() - 2;
 
 			class_desc->push_table(2);
-			class_desc->set_table_column_expand(1, 1);
+			class_desc->set_table_column_expand(1, true);
 
 			class_desc->push_cell();
 			class_desc->push_font(doc_code_font);
@@ -1497,7 +1497,8 @@ void EditorHelp::_notification(int p_what) {
 				_class_desc_resized();
 			}
 		} break;
-		default: break;
+		default:
+			break;
 	}
 }
 
@@ -1642,7 +1643,8 @@ void EditorHelpBit::_notification(int p_what) {
 
 			rich_text->add_theme_color_override("selection_color", get_theme_color("accent_color", "Editor") * Color(1, 1, 1, 0.4));
 		} break;
-		default: break;
+		default:
+			break;
 	}
 }
 
@@ -1786,7 +1788,8 @@ void FindBar::_update_results_count() {
 	results_count = 0;
 
 	String searched = search_text->get_text();
-	if (searched.empty()) return;
+	if (searched.empty())
+		return;
 
 	String full_text = rich_text_label->get_text();
 

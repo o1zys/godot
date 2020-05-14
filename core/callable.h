@@ -49,7 +49,7 @@ class Callable {
 	//needs to be max 16 bytes in 64 bits
 	StringName method;
 	union {
-		uint64_t object;
+		uint64_t object = 0;
 		CallableCustom *custom;
 	};
 
@@ -75,7 +75,7 @@ public:
 		return method == StringName() && object == 0;
 	}
 	_FORCE_INLINE_ bool is_custom() const {
-		return method == StringName() && custom != 0;
+		return method == StringName() && custom != nullptr;
 	}
 	_FORCE_INLINE_ bool is_standard() const {
 		return method != StringName();
@@ -100,14 +100,14 @@ public:
 	Callable(ObjectID p_object, const StringName &p_method);
 	Callable(CallableCustom *p_custom);
 	Callable(const Callable &p_callable);
-	Callable();
+	Callable() {}
 	~Callable();
 };
 
 class CallableCustom {
 	friend class Callable;
 	SafeRefCount ref_count;
-	bool referenced;
+	bool referenced = false;
 
 public:
 	typedef bool (*CompareEqualFunc)(const CallableCustom *p_a, const CallableCustom *p_b);
@@ -156,7 +156,7 @@ public:
 	Array get_connections() const;
 	Signal(const Object *p_object, const StringName &p_name);
 	Signal(ObjectID p_object, const StringName &p_name);
-	Signal();
+	Signal() {}
 };
 
 #endif // CALLABLE_H

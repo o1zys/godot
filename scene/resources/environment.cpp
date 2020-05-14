@@ -164,7 +164,7 @@ float Environment::get_ambient_light_sky_contribution() const {
 
 	return ambient_sky_contribution;
 }
-int Environment::get_camera_feed_id(void) const {
+int Environment::get_camera_feed_id() const {
 
 	return camera_feed_id;
 }
@@ -1117,11 +1117,7 @@ void Environment::_bind_methods() {
 	BIND_ENUM_CONSTANT(SSAO_BLUR_3x3);
 }
 
-Environment::Environment() :
-		bg_mode(BG_CLEAR_COLOR),
-		tone_mapper(TONE_MAPPER_LINEAR),
-		ssao_blur(SSAO_BLUR_3x3),
-		glow_blend_mode(GLOW_BLEND_MODE_ADDITIVE) {
+Environment::Environment() {
 
 	environment = RS::get_singleton()->environment_create();
 

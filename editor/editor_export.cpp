@@ -252,13 +252,6 @@ String EditorExportPreset::get_script_encryption_key() const {
 	return script_key;
 }
 
-EditorExportPreset::EditorExportPreset() :
-		export_filter(EXPORT_ALL_RESOURCES),
-		export_path(""),
-		runnable(false),
-		script_mode(MODE_SCRIPT_COMPILED) {
-}
-
 ///////////////////////////////////
 
 void EditorExportPlatform::gen_debug_flags(Vector<String> &r_flags, int p_flags) {
@@ -284,7 +277,7 @@ void EditorExportPlatform::gen_debug_flags(Vector<String> &r_flags, int p_flags)
 
 		r_flags.push_back("--remote-debug");
 
-		r_flags.push_back(host + ":" + String::num(remote_port));
+		r_flags.push_back(get_debug_protocol() + host + ":" + String::num(remote_port));
 
 		List<String> breakpoints;
 		ScriptEditor::get_singleton()->get_breakpoints(&breakpoints);
@@ -871,7 +864,7 @@ Error EditorExportPlatform::export_project_files(const Ref<EditorExportPreset> &
 
 	ProjectSettings::CustomMap custom_map;
 	if (path_remaps.size()) {
-		if (1) { //new remap mode, use always as it's friendlier with multiple .pck exports
+		if (true) { //new remap mode, use always as it's friendlier with multiple .pck exports
 			for (int i = 0; i < path_remaps.size(); i += 2) {
 				String from = path_remaps[i];
 				String to = path_remaps[i + 1];
@@ -1127,7 +1120,7 @@ void EditorExportPlatform::gen_export_flags(Vector<String> &r_flags, int p_flags
 
 		r_flags.push_back("--remote-debug");
 
-		r_flags.push_back(host + ":" + String::num(remote_port));
+		r_flags.push_back(get_debug_protocol() + host + ":" + String::num(remote_port));
 
 		List<String> breakpoints;
 		ScriptEditor::get_singleton()->get_breakpoints(&breakpoints);

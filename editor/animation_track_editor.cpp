@@ -5297,10 +5297,18 @@ void AnimationTrackEditor::_edit_menu_pressed(int p_option) {
 				}
 
 				switch (animation->track_get_type(i)) {
-					case Animation::TYPE_TRANSFORM: text += " (Transform)"; break;
-					case Animation::TYPE_METHOD: text += " (Methods)"; break;
-					case Animation::TYPE_BEZIER: text += " (Bezier)"; break;
-					case Animation::TYPE_AUDIO: text += " (Audio)"; break;
+					case Animation::TYPE_TRANSFORM:
+						text += " (Transform)";
+						break;
+					case Animation::TYPE_METHOD:
+						text += " (Methods)";
+						break;
+					case Animation::TYPE_BEZIER:
+						text += " (Bezier)";
+						break;
+					case Animation::TYPE_AUDIO:
+						text += " (Audio)";
+						break;
 					default: {
 					};
 				}
@@ -5947,7 +5955,7 @@ AnimationTrackEditor::AnimationTrackEditor() {
 	insert_confirm_bezier->set_text(TTR("Use Bezier Curves"));
 	icvb->add_child(insert_confirm_bezier);
 	keying = false;
-	moving_selection = 0;
+	moving_selection = false;
 	key_edit = nullptr;
 	multi_key_edit = nullptr;
 

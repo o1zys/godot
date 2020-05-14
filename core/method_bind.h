@@ -165,7 +165,8 @@ struct VariantObjectClassChecker<Control *> {
 #define CHECK_NOARG(m_arg)                             \
 	{                                                  \
 		if (p_arg##m_arg.get_type() != Variant::NIL) { \
-			if (r_argerror) *r_argerror = (m_arg - 1); \
+			if (r_argerror)                            \
+				*r_argerror = (m_arg - 1);             \
 			return CALL_ERROR_EXTRA_ARGUMENT;          \
 		}                                              \
 	}
@@ -207,18 +208,18 @@ struct PtrToArg<wchar_t> {
 class MethodBind {
 
 	int method_id;
-	uint32_t hint_flags;
+	uint32_t hint_flags = METHOD_FLAGS_DEFAULT;
 	StringName name;
 	Vector<Variant> default_arguments;
-	int default_argument_count;
-	int argument_count;
+	int default_argument_count = 0;
+	int argument_count = 0;
 
-	bool _const;
-	bool _returns;
+	bool _const = false;
+	bool _returns = false;
 
 protected:
 #ifdef DEBUG_METHODS_ENABLED
-	Variant::Type *argument_types;
+	Variant::Type *argument_types = nullptr;
 	Vector<StringName> arg_names;
 #endif
 	void _set_const(bool p_const);
@@ -303,12 +304,11 @@ public:
 	typedef Variant (T::*NativeCall)(const Variant **, int, Callable::CallError &);
 
 protected:
-	NativeCall call_method;
+	NativeCall call_method = nullptr;
 #ifdef DEBUG_METHODS_ENABLED
-
 	MethodInfo arguments;
-
 #endif
+
 public:
 #ifdef DEBUG_METHODS_ENABLED
 
@@ -383,7 +383,6 @@ public:
 	virtual bool is_vararg() const { return true; }
 
 	MethodBindVarArg() {
-		call_method = nullptr;
 		_set_returns(true);
 	}
 };

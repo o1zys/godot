@@ -46,8 +46,7 @@
 	@author AndreaCatania
 */
 
-ShapeBullet::ShapeBullet() :
-		margin(0.04) {}
+ShapeBullet::ShapeBullet() {}
 
 ShapeBullet::~ShapeBullet() {}
 
@@ -81,7 +80,8 @@ void ShapeBullet::add_owner(ShapeOwnerBullet *p_owner) {
 
 void ShapeBullet::remove_owner(ShapeOwnerBullet *p_owner, bool p_permanentlyFromThisBody) {
 	Map<ShapeOwnerBullet *, int>::Element *E = owners.find(p_owner);
-	if (!E) return;
+	if (!E)
+		return;
 	E->get()--;
 	if (p_permanentlyFromThisBody || 0 >= E->get()) {
 		owners.erase(E);
@@ -361,8 +361,7 @@ btCollisionShape *ConvexPolygonShapeBullet::create_bt_shape(const btVector3 &p_i
 /* Concave polygon */
 
 ConcavePolygonShapeBullet::ConcavePolygonShapeBullet() :
-		ShapeBullet(),
-		meshShape(nullptr) {}
+		ShapeBullet() {}
 
 ConcavePolygonShapeBullet::~ConcavePolygonShapeBullet() {
 	if (meshShape) {
@@ -562,9 +561,7 @@ btCollisionShape *HeightMapShapeBullet::create_bt_shape(const btVector3 &p_impli
 
 /* Ray shape */
 RayShapeBullet::RayShapeBullet() :
-		ShapeBullet(),
-		length(1),
-		slips_on_slope(false) {}
+		ShapeBullet() {}
 
 void RayShapeBullet::set_data(const Variant &p_data) {
 

@@ -331,7 +331,7 @@ bool PhysicsDirectSpaceState3DSW::cast_motion(const RID &p_shape, const Transfor
 bool PhysicsDirectSpaceState3DSW::collide_shape(RID p_shape, const Transform &p_shape_xform, real_t p_margin, Vector3 *r_results, int p_result_max, int &r_result_count, const Set<RID> &p_exclude, uint32_t p_collision_mask, bool p_collide_with_bodies, bool p_collide_with_areas) {
 
 	if (p_result_max <= 0)
-		return 0;
+		return false;
 
 	Shape3DSW *shape = static_cast<PhysicsServer3DSW *>(PhysicsServer3D::get_singleton())->shape_owner.getornull(p_shape);
 	ERR_FAIL_COND_V(!shape, 0);
@@ -1154,15 +1154,33 @@ void Space3DSW::set_param(PhysicsServer3D::SpaceParameter p_param, real_t p_valu
 
 	switch (p_param) {
 
-		case PhysicsServer3D::SPACE_PARAM_CONTACT_RECYCLE_RADIUS: contact_recycle_radius = p_value; break;
-		case PhysicsServer3D::SPACE_PARAM_CONTACT_MAX_SEPARATION: contact_max_separation = p_value; break;
-		case PhysicsServer3D::SPACE_PARAM_BODY_MAX_ALLOWED_PENETRATION: contact_max_allowed_penetration = p_value; break;
-		case PhysicsServer3D::SPACE_PARAM_BODY_LINEAR_VELOCITY_SLEEP_THRESHOLD: body_linear_velocity_sleep_threshold = p_value; break;
-		case PhysicsServer3D::SPACE_PARAM_BODY_ANGULAR_VELOCITY_SLEEP_THRESHOLD: body_angular_velocity_sleep_threshold = p_value; break;
-		case PhysicsServer3D::SPACE_PARAM_BODY_TIME_TO_SLEEP: body_time_to_sleep = p_value; break;
-		case PhysicsServer3D::SPACE_PARAM_BODY_ANGULAR_VELOCITY_DAMP_RATIO: body_angular_velocity_damp_ratio = p_value; break;
-		case PhysicsServer3D::SPACE_PARAM_CONSTRAINT_DEFAULT_BIAS: constraint_bias = p_value; break;
-		case PhysicsServer3D::SPACE_PARAM_TEST_MOTION_MIN_CONTACT_DEPTH: test_motion_min_contact_depth = p_value; break;
+		case PhysicsServer3D::SPACE_PARAM_CONTACT_RECYCLE_RADIUS:
+			contact_recycle_radius = p_value;
+			break;
+		case PhysicsServer3D::SPACE_PARAM_CONTACT_MAX_SEPARATION:
+			contact_max_separation = p_value;
+			break;
+		case PhysicsServer3D::SPACE_PARAM_BODY_MAX_ALLOWED_PENETRATION:
+			contact_max_allowed_penetration = p_value;
+			break;
+		case PhysicsServer3D::SPACE_PARAM_BODY_LINEAR_VELOCITY_SLEEP_THRESHOLD:
+			body_linear_velocity_sleep_threshold = p_value;
+			break;
+		case PhysicsServer3D::SPACE_PARAM_BODY_ANGULAR_VELOCITY_SLEEP_THRESHOLD:
+			body_angular_velocity_sleep_threshold = p_value;
+			break;
+		case PhysicsServer3D::SPACE_PARAM_BODY_TIME_TO_SLEEP:
+			body_time_to_sleep = p_value;
+			break;
+		case PhysicsServer3D::SPACE_PARAM_BODY_ANGULAR_VELOCITY_DAMP_RATIO:
+			body_angular_velocity_damp_ratio = p_value;
+			break;
+		case PhysicsServer3D::SPACE_PARAM_CONSTRAINT_DEFAULT_BIAS:
+			constraint_bias = p_value;
+			break;
+		case PhysicsServer3D::SPACE_PARAM_TEST_MOTION_MIN_CONTACT_DEPTH:
+			test_motion_min_contact_depth = p_value;
+			break;
 	}
 }
 
@@ -1170,15 +1188,24 @@ real_t Space3DSW::get_param(PhysicsServer3D::SpaceParameter p_param) const {
 
 	switch (p_param) {
 
-		case PhysicsServer3D::SPACE_PARAM_CONTACT_RECYCLE_RADIUS: return contact_recycle_radius;
-		case PhysicsServer3D::SPACE_PARAM_CONTACT_MAX_SEPARATION: return contact_max_separation;
-		case PhysicsServer3D::SPACE_PARAM_BODY_MAX_ALLOWED_PENETRATION: return contact_max_allowed_penetration;
-		case PhysicsServer3D::SPACE_PARAM_BODY_LINEAR_VELOCITY_SLEEP_THRESHOLD: return body_linear_velocity_sleep_threshold;
-		case PhysicsServer3D::SPACE_PARAM_BODY_ANGULAR_VELOCITY_SLEEP_THRESHOLD: return body_angular_velocity_sleep_threshold;
-		case PhysicsServer3D::SPACE_PARAM_BODY_TIME_TO_SLEEP: return body_time_to_sleep;
-		case PhysicsServer3D::SPACE_PARAM_BODY_ANGULAR_VELOCITY_DAMP_RATIO: return body_angular_velocity_damp_ratio;
-		case PhysicsServer3D::SPACE_PARAM_CONSTRAINT_DEFAULT_BIAS: return constraint_bias;
-		case PhysicsServer3D::SPACE_PARAM_TEST_MOTION_MIN_CONTACT_DEPTH: return test_motion_min_contact_depth;
+		case PhysicsServer3D::SPACE_PARAM_CONTACT_RECYCLE_RADIUS:
+			return contact_recycle_radius;
+		case PhysicsServer3D::SPACE_PARAM_CONTACT_MAX_SEPARATION:
+			return contact_max_separation;
+		case PhysicsServer3D::SPACE_PARAM_BODY_MAX_ALLOWED_PENETRATION:
+			return contact_max_allowed_penetration;
+		case PhysicsServer3D::SPACE_PARAM_BODY_LINEAR_VELOCITY_SLEEP_THRESHOLD:
+			return body_linear_velocity_sleep_threshold;
+		case PhysicsServer3D::SPACE_PARAM_BODY_ANGULAR_VELOCITY_SLEEP_THRESHOLD:
+			return body_angular_velocity_sleep_threshold;
+		case PhysicsServer3D::SPACE_PARAM_BODY_TIME_TO_SLEEP:
+			return body_time_to_sleep;
+		case PhysicsServer3D::SPACE_PARAM_BODY_ANGULAR_VELOCITY_DAMP_RATIO:
+			return body_angular_velocity_damp_ratio;
+		case PhysicsServer3D::SPACE_PARAM_CONSTRAINT_DEFAULT_BIAS:
+			return constraint_bias;
+		case PhysicsServer3D::SPACE_PARAM_TEST_MOTION_MIN_CONTACT_DEPTH:
+			return test_motion_min_contact_depth;
 	}
 	return 0;
 }

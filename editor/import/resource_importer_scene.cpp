@@ -221,16 +221,26 @@ int ResourceImporterScene::get_preset_count() const {
 String ResourceImporterScene::get_preset_name(int p_idx) const {
 
 	switch (p_idx) {
-		case PRESET_SINGLE_SCENE: return TTR("Import as Single Scene");
-		case PRESET_SEPARATE_ANIMATIONS: return TTR("Import with Separate Animations");
-		case PRESET_SEPARATE_MATERIALS: return TTR("Import with Separate Materials");
-		case PRESET_SEPARATE_MESHES: return TTR("Import with Separate Objects");
-		case PRESET_SEPARATE_MESHES_AND_MATERIALS: return TTR("Import with Separate Objects+Materials");
-		case PRESET_SEPARATE_MESHES_AND_ANIMATIONS: return TTR("Import with Separate Objects+Animations");
-		case PRESET_SEPARATE_MATERIALS_AND_ANIMATIONS: return TTR("Import with Separate Materials+Animations");
-		case PRESET_SEPARATE_MESHES_MATERIALS_AND_ANIMATIONS: return TTR("Import with Separate Objects+Materials+Animations");
-		case PRESET_MULTIPLE_SCENES: return TTR("Import as Multiple Scenes");
-		case PRESET_MULTIPLE_SCENES_AND_MATERIALS: return TTR("Import as Multiple Scenes+Materials");
+		case PRESET_SINGLE_SCENE:
+			return TTR("Import as Single Scene");
+		case PRESET_SEPARATE_ANIMATIONS:
+			return TTR("Import with Separate Animations");
+		case PRESET_SEPARATE_MATERIALS:
+			return TTR("Import with Separate Materials");
+		case PRESET_SEPARATE_MESHES:
+			return TTR("Import with Separate Objects");
+		case PRESET_SEPARATE_MESHES_AND_MATERIALS:
+			return TTR("Import with Separate Objects+Materials");
+		case PRESET_SEPARATE_MESHES_AND_ANIMATIONS:
+			return TTR("Import with Separate Objects+Animations");
+		case PRESET_SEPARATE_MATERIALS_AND_ANIMATIONS:
+			return TTR("Import with Separate Materials+Animations");
+		case PRESET_SEPARATE_MESHES_MATERIALS_AND_ANIMATIONS:
+			return TTR("Import with Separate Objects+Materials+Animations");
+		case PRESET_MULTIPLE_SCENES:
+			return TTR("Import as Multiple Scenes");
+		case PRESET_MULTIPLE_SCENES_AND_MATERIALS:
+			return TTR("Import as Multiple Scenes+Materials");
 	}
 
 	return "";
@@ -344,7 +354,7 @@ Node *ResourceImporterScene::_fix_node(Node *p_node, Node *p_root, Map<Ref<Mesh>
 
 		if (p_light_bake_mode != LIGHT_BAKE_DISABLED) {
 
-			mi->set_flag(GeometryInstance3D::FLAG_USE_BAKED_LIGHT, true);
+			mi->set_gi_mode(GeometryInstance3D::GI_MODE_BAKED);
 		}
 	}
 
@@ -945,7 +955,7 @@ void ResourceImporterScene::_find_meshes(Node *p_node, Map<Ref<ArrayMesh>, Trans
 			Transform transform;
 			while (s) {
 				transform = transform * s->get_transform();
-				s = s->get_parent_spatial();
+				s = Object::cast_to<Node3D>(s->get_parent());
 			}
 
 			meshes[mesh] = transform;
@@ -1348,8 +1358,9 @@ Error ResourceImporterScene::import(const String &p_source_file, const String &p
 		scene->set_script(Variant(root_script));
 	}
 
+	float root_scale = 1.0;
 	if (Object::cast_to<Node3D>(scene)) {
-		float root_scale = p_options["nodes/root_scale"];
+		root_scale = p_options["nodes/root_scale"];
 		Object::cast_to<Node3D>(scene)->scale(Vector3(root_scale, root_scale, root_scale));
 	}
 
@@ -1571,7 +1582,9 @@ Error ResourceImporterScene::import(const String &p_source_file, const String &p
 		post_import_script->init(base_path, p_source_file);
 		scene = post_import_script->post_import(scene);
 		if (!scene) {
-			EditorNode::add_io_error(TTR("Error running post-import script:") + " " + post_import_script_path);
+			EditorNode::add_io_error(
+					TTR("Error running post-import script:") + " " + post_import_script_path + "\n" +
+					TTR("Did you return a Node-derived object in the `post_import()` method?"));
 			return err;
 		}
 	}

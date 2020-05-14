@@ -52,25 +52,20 @@ class StringName {
 
 	struct _Data {
 		SafeRefCount refcount;
-		const char *cname;
+		const char *cname = nullptr;
 		String name;
 
 		String get_name() const { return cname ? String(cname) : name; }
-		int idx;
-		uint32_t hash;
-		_Data *prev;
-		_Data *next;
-		_Data() {
-			cname = nullptr;
-			next = prev = nullptr;
-			idx = 0;
-			hash = 0;
-		}
+		int idx = 0;
+		uint32_t hash = 0;
+		_Data *prev = nullptr;
+		_Data *next = nullptr;
+		_Data() {}
 	};
 
 	static _Data *_table[STRING_TABLE_LEN];
 
-	_Data *_data;
+	_Data *_data = nullptr;
 
 	union _HashUnion {
 
@@ -90,7 +85,7 @@ class StringName {
 	StringName(_Data *p_data) { _data = p_data; }
 
 public:
-	operator const void *() const { return (_data && (_data->cname || !_data->name.empty())) ? (void *)1 : 0; }
+	operator const void *() const { return (_data && (_data->cname || !_data->name.empty())) ? (void *)1 : nullptr; }
 
 	bool operator==(const String &p_name) const;
 	bool operator==(const char *p_name) const;
@@ -160,7 +155,7 @@ public:
 	StringName(const StringName &p_name);
 	StringName(const String &p_name);
 	StringName(const StaticCString &p_static_string);
-	StringName();
+	StringName() {}
 	~StringName();
 };
 

@@ -972,22 +972,26 @@ bool test_31() {
 	String a = "";
 	success = a[0] == 0;
 	OS::get_singleton()->print("Is 0 String[0]:, %s\n", success ? "OK" : "FAIL");
-	if (!success) state = false;
+	if (!success)
+		state = false;
 
 	String b = "Godot";
 	success = b[b.size()] == 0;
 	OS::get_singleton()->print("Is 0 String[size()]:, %s\n", success ? "OK" : "FAIL");
-	if (!success) state = false;
+	if (!success)
+		state = false;
 
 	const String c = "";
 	success = c[0] == 0;
 	OS::get_singleton()->print("Is 0 const String[0]:, %s\n", success ? "OK" : "FAIL");
-	if (!success) state = false;
+	if (!success)
+		state = false;
 
 	const String d = "Godot";
 	success = d[d.size()] == 0;
 	OS::get_singleton()->print("Is 0 const String[size()]:, %s\n", success ? "OK" : "FAIL");
-	if (!success) state = false;
+	if (!success)
+		state = false;
 
 	return state;
 };
@@ -1125,7 +1129,7 @@ bool test_35() {
 	return state;
 }
 
-typedef bool (*TestFunc)(void);
+typedef bool (*TestFunc)();
 
 TestFunc test_funcs[] = {
 

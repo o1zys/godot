@@ -989,10 +989,6 @@ void ProjectSettings::_bind_methods() {
 ProjectSettings::ProjectSettings() {
 
 	singleton = this;
-	last_order = NO_BUILTIN_ORDER_BASE;
-	last_builtin_order = 0;
-	disable_feature_overrides = false;
-	registering_order = true;
 
 	Array events;
 	Dictionary action;
@@ -1037,7 +1033,7 @@ ProjectSettings::ProjectSettings() {
 	key->set_keycode(KEY_SPACE);
 	events.push_back(key);
 	joyb.instance();
-	joyb->set_button_index(JOY_BUTTON_0);
+	joyb->set_button_index(JOY_BUTTON_A);
 	events.push_back(joyb);
 	action["events"] = events;
 	GLOBAL_DEF("input/ui_accept", action);
@@ -1050,7 +1046,7 @@ ProjectSettings::ProjectSettings() {
 	key->set_keycode(KEY_SPACE);
 	events.push_back(key);
 	joyb.instance();
-	joyb->set_button_index(JOY_BUTTON_3);
+	joyb->set_button_index(JOY_BUTTON_Y);
 	events.push_back(joyb);
 	action["events"] = events;
 	GLOBAL_DEF("input/ui_select", action);
@@ -1063,7 +1059,7 @@ ProjectSettings::ProjectSettings() {
 	key->set_keycode(KEY_ESCAPE);
 	events.push_back(key);
 	joyb.instance();
-	joyb->set_button_index(JOY_BUTTON_1);
+	joyb->set_button_index(JOY_BUTTON_B);
 	events.push_back(joyb);
 	action["events"] = events;
 	GLOBAL_DEF("input/ui_cancel", action);
@@ -1097,7 +1093,7 @@ ProjectSettings::ProjectSettings() {
 	key->set_keycode(KEY_LEFT);
 	events.push_back(key);
 	joyb.instance();
-	joyb->set_button_index(JOY_DPAD_LEFT);
+	joyb->set_button_index(JOY_BUTTON_DPAD_LEFT);
 	events.push_back(joyb);
 	action["events"] = events;
 	GLOBAL_DEF("input/ui_left", action);
@@ -1110,7 +1106,7 @@ ProjectSettings::ProjectSettings() {
 	key->set_keycode(KEY_RIGHT);
 	events.push_back(key);
 	joyb.instance();
-	joyb->set_button_index(JOY_DPAD_RIGHT);
+	joyb->set_button_index(JOY_BUTTON_DPAD_RIGHT);
 	events.push_back(joyb);
 	action["events"] = events;
 	GLOBAL_DEF("input/ui_right", action);
@@ -1123,7 +1119,7 @@ ProjectSettings::ProjectSettings() {
 	key->set_keycode(KEY_UP);
 	events.push_back(key);
 	joyb.instance();
-	joyb->set_button_index(JOY_DPAD_UP);
+	joyb->set_button_index(JOY_BUTTON_DPAD_UP);
 	events.push_back(joyb);
 	action["events"] = events;
 	GLOBAL_DEF("input/ui_up", action);
@@ -1136,7 +1132,7 @@ ProjectSettings::ProjectSettings() {
 	key->set_keycode(KEY_DOWN);
 	events.push_back(key);
 	joyb.instance();
-	joyb->set_button_index(JOY_DPAD_DOWN);
+	joyb->set_button_index(JOY_BUTTON_DPAD_DOWN);
 	events.push_back(joyb);
 	action["events"] = events;
 	GLOBAL_DEF("input/ui_down", action);
@@ -1203,8 +1199,6 @@ ProjectSettings::ProjectSettings() {
 
 	Compression::gzip_level = GLOBAL_DEF("compression/formats/gzip/compression_level", Z_DEFAULT_COMPRESSION);
 	custom_prop_info["compression/formats/gzip/compression_level"] = PropertyInfo(Variant::INT, "compression/formats/gzip/compression_level", PROPERTY_HINT_RANGE, "-1,9,1");
-
-	using_datapack = false;
 }
 
 ProjectSettings::~ProjectSettings() {

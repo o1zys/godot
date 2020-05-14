@@ -902,10 +902,6 @@ void Translation::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "locale"), "set_locale", "get_locale");
 }
 
-Translation::Translation() :
-		locale("en") {
-}
-
 ///////////////////////////////////////////////
 
 bool TranslationServer::is_locale_valid(const String &p_locale) {
@@ -989,7 +985,8 @@ String TranslationServer::get_locale() const {
 
 String TranslationServer::get_locale_name(const String &p_locale) const {
 
-	if (!locale_name_map.has(p_locale)) return String();
+	if (!locale_name_map.has(p_locale))
+		return String();
 	return locale_name_map[p_locale];
 }
 
@@ -1246,13 +1243,10 @@ void TranslationServer::load_translations() {
 	}
 }
 
-TranslationServer::TranslationServer() :
-		locale("en"),
-		enabled(true) {
+TranslationServer::TranslationServer() {
 	singleton = this;
 
 	for (int i = 0; locale_list[i]; ++i) {
-
 		locale_name_map.insert(locale_list[i], String::utf8(locale_names[i]));
 	}
 }

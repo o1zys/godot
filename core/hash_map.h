@@ -75,8 +75,8 @@ public:
 		friend class HashMap;
 
 		uint32_t hash;
-		Element *next;
-		Element() { next = 0; }
+		Element *next = nullptr;
+		Element() {}
 		Pair pair;
 
 	public:
@@ -94,9 +94,9 @@ public:
 	};
 
 private:
-	Element **hash_table;
-	uint8_t hash_table_power;
-	uint32_t elements;
+	Element **hash_table = nullptr;
+	uint8_t hash_table_power = 0;
+	uint32_t elements = 0;
 
 	void make_hash_table() {
 
@@ -107,7 +107,7 @@ private:
 		hash_table_power = MIN_HASH_TABLE_POWER;
 		elements = 0;
 		for (int i = 0; i < (1 << MIN_HASH_TABLE_POWER); i++)
-			hash_table[i] = 0;
+			hash_table[i] = nullptr;
 	}
 
 	void erase_hash_table() {
@@ -115,7 +115,7 @@ private:
 		ERR_FAIL_COND_MSG(elements, "Cannot erase hash table if there are still elements inside.");
 
 		memdelete_arr(hash_table);
-		hash_table = 0;
+		hash_table = nullptr;
 		hash_table_power = 0;
 		elements = 0;
 	}
@@ -155,7 +155,7 @@ private:
 
 		for (int i = 0; i < (1 << new_hash_table_power); i++) {
 
-			new_hash_table[i] = 0;
+			new_hash_table[i] = nullptr;
 		}
 
 		if (hash_table) {
@@ -541,7 +541,7 @@ public:
 			memdelete_arr(hash_table);
 		}
 
-		hash_table = 0;
+		hash_table = nullptr;
 		hash_table_power = 0;
 		elements = 0;
 	}
@@ -549,12 +549,6 @@ public:
 	void operator=(const HashMap &p_table) {
 
 		copy_from(p_table);
-	}
-
-	HashMap() {
-		hash_table = nullptr;
-		elements = 0;
-		hash_table_power = 0;
 	}
 
 	void get_key_value_ptr_array(const Pair **p_pairs) const {
@@ -584,17 +578,13 @@ public:
 		}
 	}
 
+	HashMap() {}
+
 	HashMap(const HashMap &p_table) {
-
-		hash_table = nullptr;
-		elements = 0;
-		hash_table_power = 0;
-
 		copy_from(p_table);
 	}
 
 	~HashMap() {
-
 		clear();
 	}
 };

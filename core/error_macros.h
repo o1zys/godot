@@ -48,16 +48,12 @@ typedef void (*ErrorHandlerFunc)(void *, const char *, const char *, int p_line,
 
 struct ErrorHandlerList {
 
-	ErrorHandlerFunc errfunc;
-	void *userdata;
+	ErrorHandlerFunc errfunc = nullptr;
+	void *userdata = nullptr;
 
-	ErrorHandlerList *next;
+	ErrorHandlerList *next = nullptr;
 
-	ErrorHandlerList() {
-		errfunc = 0;
-		next = 0;
-		userdata = 0;
-	}
+	ErrorHandlerList() {}
 };
 
 void add_error_handler(ErrorHandlerList *p_handler);
@@ -530,19 +526,19 @@ void _err_print_index_error(const char *p_function, const char *p_file, int p_li
  * Prints `m_msg`.
  */
 #define ERR_PRINT(m_msg) \
-	_err_print_error(FUNCTION_STR, __FILE__, __LINE__, DEBUG_STR(m_msg))
+	_err_print_error(FUNCTION_STR, __FILE__, __LINE__, m_msg)
 
 /**
  * Prints `m_msg` once during the application lifetime.
  */
-#define ERR_PRINT_ONCE(m_msg)                                                     \
-	if (1) {                                                                      \
-		static bool first_print = true;                                           \
-		if (first_print) {                                                        \
-			_err_print_error(FUNCTION_STR, __FILE__, __LINE__, DEBUG_STR(m_msg)); \
-			first_print = false;                                                  \
-		}                                                                         \
-	} else                                                                        \
+#define ERR_PRINT_ONCE(m_msg)                                          \
+	if (1) {                                                           \
+		static bool first_print = true;                                \
+		if (first_print) {                                             \
+			_err_print_error(FUNCTION_STR, __FILE__, __LINE__, m_msg); \
+			first_print = false;                                       \
+		}                                                              \
+	} else                                                             \
 		((void)0)
 
 // Print warning message macros.
@@ -553,21 +549,21 @@ void _err_print_index_error(const char *p_function, const char *p_file, int p_li
  * If warning about deprecated usage, use `WARN_DEPRECATED` or `WARN_DEPRECATED_MSG` instead.
  */
 #define WARN_PRINT(m_msg) \
-	_err_print_error(FUNCTION_STR, __FILE__, __LINE__, DEBUG_STR(m_msg), ERR_HANDLER_WARNING)
+	_err_print_error(FUNCTION_STR, __FILE__, __LINE__, m_msg, ERR_HANDLER_WARNING)
 
 /**
  * Prints `m_msg` once during the application lifetime.
  *
  * If warning about deprecated usage, use `WARN_DEPRECATED` or `WARN_DEPRECATED_MSG` instead.
  */
-#define WARN_PRINT_ONCE(m_msg)                                                                         \
-	if (1) {                                                                                           \
-		static bool first_print = true;                                                                \
-		if (first_print) {                                                                             \
-			_err_print_error(FUNCTION_STR, __FILE__, __LINE__, DEBUG_STR(m_msg), ERR_HANDLER_WARNING); \
-			first_print = false;                                                                       \
-		}                                                                                              \
-	} else                                                                                             \
+#define WARN_PRINT_ONCE(m_msg)                                                              \
+	if (1) {                                                                                \
+		static bool first_print = true;                                                     \
+		if (first_print) {                                                                  \
+			_err_print_error(FUNCTION_STR, __FILE__, __LINE__, m_msg, ERR_HANDLER_WARNING); \
+			first_print = false;                                                            \
+		}                                                                                   \
+	} else                                                                                  \
 		((void)0)
 
 // Print deprecated warning message macros.

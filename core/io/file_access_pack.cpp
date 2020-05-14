@@ -109,8 +109,6 @@ PackedData::PackedData() {
 
 	singleton = this;
 	root = memnew(PackedDir);
-	root->parent = nullptr;
-	disabled = false;
 
 	add_pack_source(memnew(PackedSourcePCK));
 }
@@ -414,7 +412,8 @@ Error DirAccessPack::change_dir(String p_dir) {
 
 	nd = nd.simplify_path();
 
-	if (nd == "") nd = ".";
+	if (nd == "")
+		nd = ".";
 
 	if (nd.begins_with("/")) {
 		nd = nd.replace_first("/", "");
@@ -505,10 +504,5 @@ String DirAccessPack::get_filesystem_type() const {
 }
 
 DirAccessPack::DirAccessPack() {
-
 	current = PackedData::get_singleton()->root;
-	cdir = false;
-}
-
-DirAccessPack::~DirAccessPack() {
 }
